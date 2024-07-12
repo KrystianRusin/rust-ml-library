@@ -33,4 +33,21 @@ impl LinearRegression {
     pub fn predict(&self, x: &Array2<f64>) -> Option<Array1<f64>> {
         self.coefficients.as_ref().map(|coeffs| x.dot(coeffs))
     }
+
+    pub fn evaluate(&self, x: &Array2<f64>, y: &Array1<f64>) -> Option<(f64, f64, f64, f64)> {
+        if let Some(y_pred) = self.predict(x) {
+            let m = y.len() as f64;
+            let mse = y.iter().zip(y_pred.iter()).map(|(yi, ypi)| (yi - ypi).powi(2)).sum::<f64>() / m;
+            let rmse = mse.sqrt();
+            let mae = y.iter().zip(y_pred.iter()).map(|(yi, ypi)| (yi - ypi).abs()).sum::<f64>() / m;
+            let y_mean = y.mean().unwrap();
+            let ss_total = y.iter().map(|yi| (yi - y_mean).powi(2)).sum::<f64>();
+            let ss_res = y.iter().zip(y_pred.iter()).map(|(yi, ypi)| (yi - ypi).powi(2)).sum::<f64>();
+            let r2 = 1.0 - (ss_res / ss_total);
+            Some((mse, rmse, mae, r2))
+        } else {
+            None
+        }
+    }
+
 }

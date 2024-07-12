@@ -18,4 +18,13 @@ fn main() {
     } else {
         println!("Model has not been trained yet.");
     }
+
+    if let Some((mse, rmse, mae, r2)) = model.evaluate(&x, &y) {
+        println!("MSE: {}", mse);
+        println!("RMSE: {}", rmse);
+        println!("MAE: {}", mae);
+        println!("R²: {}", r2);
+    } else {
+        println!("Model evaluation failed.");
+    }
 }
