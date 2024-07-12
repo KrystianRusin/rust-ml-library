@@ -1,3 +1,5 @@
+## Rust-ML-Library ##
+
 Implementations of various ML algorithms/techniques from scratch in Rust
 
 Currently Added:
